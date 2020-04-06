@@ -12,7 +12,8 @@
     "yup": "^0.28.3"
   },
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
