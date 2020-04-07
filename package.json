@@ -14,7 +14,8 @@
   },
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "sucrase-node src/server.js"
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/server.js"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
