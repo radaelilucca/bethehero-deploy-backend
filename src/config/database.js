@@ -7,9 +7,7 @@ module.exports = {
   password: process.env.DB_PASS,
   port: "5432",
   database: process.env.DB_NAME,
-  production: {
-    use_env_variable: process.env.NODE_ENV,
-  },
+
   define: {
     tiestamps: true,
     underscored: true,
