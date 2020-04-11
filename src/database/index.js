@@ -1,7 +1,6 @@
 import "dotenv/config";
 import { createDb, migrate } from "postgres-migrations";
-const { resolve } = require('path');
-
+const { resolve } = require("path");
 
 import Sequelize from "sequelize";
 
@@ -15,6 +14,7 @@ const models = [Ong, Incident];
 class Database {
   constructor() {
     this.init();
+    this.migrate();
   }
 
   init() {
@@ -25,12 +25,19 @@ class Database {
       .map(
         (model) => model.associate && model.associate(this.connection.models)
       );
+  }
 
-      await createDb('betheheroDB', {
+  migrate() {
+    async function migrateDb() {
+      await createDb("betheheroDB", {
         ...databaseConfig,
         defaultDatabase: "postgres",
-      })
-      await migrate(databaseConfig, resolve(__dirname, 'src', 'database', 'migrations') )
+      });
+      await migrate(
+        databaseConfig,
+        resolve(__dirname, "src", "database", "migrations")
+      );
+    }
   }
 }
 
