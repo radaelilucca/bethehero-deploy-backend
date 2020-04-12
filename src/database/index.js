@@ -1,8 +1,7 @@
 import "dotenv/config";
-import { createDb, migrate } from "postgres-migrations";
-const { resolve } = require("path");
 
 import Sequelize from "sequelize";
+import { Client } from "pg";
 
 import Ong from "../app/models/Ong";
 import Incident from "../app/models/Incident";
@@ -14,7 +13,6 @@ const models = [Ong, Incident];
 class Database {
   constructor() {
     this.init();
-    this.migrate();
   }
 
   init() {
@@ -25,19 +23,24 @@ class Database {
       .map(
         (model) => model.associate && model.associate(this.connection.models)
       );
-  }
 
-  migrate() {
-    async function migrateDb() {
-      await createDb("betheheroDB", {
-        ...databaseConfig,
-        defaultDatabase: "postgres",
-      });
-      await migrate(
-        databaseConfig,
-        resolve(__dirname, "src", "database", "migrations")
-      );
-    }
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: true,
+    });
+
+    client.connect();
+
+    client.query(
+      "SELECT table_schema,table_name FROM information_schema.tables;",
+      (err, res) => {
+        if (err) throw err;
+        for (let row of res.rows) {
+          console.log(JSON.stringify(row));
+        }
+        client.end();
+      }
+    );
   }
 }
 
