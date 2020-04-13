@@ -1,4 +1,4 @@
-import Ong from '../models/Ong';
+import Ong from "../models/Ong";
 
 class SessionController {
   async store(req, res) {
@@ -6,12 +6,12 @@ class SessionController {
 
     // check if this id exist
 
-    const ong = await Ong.findByPk(id);
+    const ong = await Ong.findOne({ id });
 
     if (!ong) {
       return res
         .status(404)
-        .json({ error: 'Ong not found - Check the Id and try again' });
+        .json({ error: "Ong not found - Check the Id and try again" });
     }
 
     const { name } = ong;
