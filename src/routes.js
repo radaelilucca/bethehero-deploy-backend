@@ -25,7 +25,7 @@ routes.get("/incidents/", IncidentController.index);
 routes.get("/ongs", OngController.index);
 
 // ------------------- Login required routes ---------------------
-//routes.use(authMiddleware);
+routes.use(authMiddleware);
 
 routes.delete("/incidents/delete/:incident_id", IncidentController.delete);
 
