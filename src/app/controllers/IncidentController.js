@@ -85,6 +85,9 @@ class IncidentController {
   async index(req, res) {
     const { page = 1 } = req.query;
     const incidents = await Incident.findAndCountAll({
+      limit: 4,
+      offset: (page - 1) * 4,
+      order: ["created_at"],
       include: [
         {
           model: Ong,
