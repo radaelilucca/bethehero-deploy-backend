@@ -1,6 +1,6 @@
-import * as yup from 'yup';
-import Ong from '../models/Ong';
-import Incident from '../models/Incident';
+import * as yup from "yup";
+import Ong from "../models/Ong";
+import Incident from "../models/Incident";
 
 class IncidentController {
   async store(req, res) {
@@ -13,7 +13,7 @@ class IncidentController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(401).json({ error: 'Validation fails' });
+      return res.status(401).json({ error: "Validation fails" });
     }
 
     const { ongId } = req;
@@ -25,7 +25,7 @@ class IncidentController {
     if (!ong) {
       return res
         .status(401)
-        .json({ error: 'Only logged ONGs can create an Incident' });
+        .json({ error: "Only logged ONGs can create an Incident" });
     }
 
     const incident = await Incident.create({
@@ -44,13 +44,13 @@ class IncidentController {
     const incident = await Incident.findByPk(id);
 
     if (!incident) {
-      return res.status(404).json({ error: 'Case not found' });
+      return res.status(404).json({ error: "Case not found" });
     }
 
     if (incident.ong_id != req.headers.auth) {
       return res
         .status(401)
-        .json({ error: 'You can only update cases of your ONG' });
+        .json({ error: "You can only update cases of your ONG" });
     }
 
     const { title, description, amount } = await incident.update(req.body);
@@ -67,13 +67,13 @@ class IncidentController {
     if (!incident) {
       return res
         .status(404)
-        .json({ error: 'Incident not found - Check the ID and try again' });
+        .json({ error: "Incident not found - Check the ID and try again" });
     }
 
     if (Number(incident.ong_id) !== ongId) {
       return res
         .status(401)
-        .json({ error: 'Incidents can only be deleted by the creator' });
+        .json({ error: "Incidents can only be deleted by the creator" });
     }
 
     await incident.destroy();
@@ -90,13 +90,27 @@ class IncidentController {
       include: [
         {
           model: Ong,
-          as: 'ong',
-          attributes: ['id', 'name', 'city', 'uf', 'whatsapp', 'email'],
+          as: "ong",
+          attributes: ["id", "name", "city", "uf", "whatsapp", "email"],
         },
       ],
     });
-    res.set('count', incidents.count);
+    res.set("count", incidents.count);
     return res.json(incidents.rows);
+  }
+
+  // get one incident
+
+  async show(req, res) {
+    const { id } = req.params;
+
+    const incident = await Incident.findByPk(id);
+
+    if (!incident) {
+      return res.status(404).json({ error: "Incident not found." });
+    }
+
+    return res.json(incident);
   }
 }
 

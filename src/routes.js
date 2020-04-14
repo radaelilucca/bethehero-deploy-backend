@@ -20,6 +20,7 @@ routes.post("/sessions/:id", SessionController.store);
 
 // List all incidents
 routes.get("/incidents/", IncidentController.index);
+// Get one incident
 
 // List all ongs
 routes.get("/ongs", OngController.index);
@@ -37,5 +38,8 @@ routes.get("/profile", ProfileController.index);
 
 // update incident
 routes.put("/incidents/:id", IncidentController.update);
+
+// Get an incident
+routes.get("/incident/:id", IncidentController.show);
 
 export default routes;
