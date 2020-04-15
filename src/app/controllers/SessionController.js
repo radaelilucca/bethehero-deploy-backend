@@ -6,7 +6,7 @@ class SessionController {
 
     // check if this id exist
 
-    const ong = await Ong.findOne({ id });
+    const ong = await Ong.findByPk(id);
 
     if (!ong) {
       return res
